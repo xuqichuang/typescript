@@ -1,0 +1,62 @@
+{
+  "title": "Typescript 中文文档",
+  "description": "Typescript 中文文档详解",
+  "author": "lucky__star",
+  "gitbook": "3.2.3",
+  "links": {
+    "sidebar": {
+      "博客中心": "https://xuqichuang.gitbook.io/typescript/"
+    }
+  },
+  "plugins": [
+    "code@0.1.0",
+    "back-to-top-button@0.1.4",
+    "search-pro@2.0.2",
+    "-search",
+    "github@2.0.0",
+    "pageview-count@1.0.1",
+    "styles-less@1.0.0",
+    "multipart@0.3.0",
+    "splitter@0.0.8",
+    "donate@1.0.2",
+    "custom-favicon@0.0.4",
+    "tbfed-pagefooter@0.0.1",
+    "auto-scroll-table@0.0.5",
+    "heading-anchors",
+    "cuav-chapters",
+    "prism@2.4.0",
+    "-highlight",
+    "-sharing"
+  ],
+  "pluginsConfig": {
+    "code": {
+      "copyButtons": true
+    },
+    "github": {
+      "url": "https://github.com/xuqichuang/typescript"
+    },
+    "prism": {
+      "css": [
+        "prismjs/themes/prism-solarizedlight.css"
+      ],
+      "lang": {
+        "flow": "typescript"
+      }
+    },
+    "tbfed-pagefooter": {
+      "copyright": "Copyright © lucky__star 2020",
+      "modify_label": "本书发布时间：",
+      "modify_format": "YYYY-MM-DD HH:mm"
+    },
+    "favicon": "images/favicon.ico",
+    "donate": {
+      "wechat": "http://photonj.photo.store.qq.com/psc?/V13gPhs63CGiSQ/KMnzwBNJT4ZeiPmlYdobb*Qhqb4yWSLU9F37KZ.frb7oO*4iG4Y*ker4Zo5huSOkukeOEd3zrLT1d5nk55xbXw!!/b&bo=gASABIAEgAQRECc!&rf=viewer_311",
+      "title": "",
+      "button": "赏",
+      "wechatText": "微信打赏"
+    },
+    "theme-default": {
+      "showLevel": true
+    }
+  }
+}
