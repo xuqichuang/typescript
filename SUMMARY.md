@@ -2,12 +2,10 @@
 
 * [Typescript 简介](README.md)
 * 辅助教程
-
   * [5分钟上手](Tutorials/TypeScript-in-5-minutes.md)
   * [从JavaScript迁移](Tutorials/Migrating-from-Javascript.md)
 
 * 参考手册
-
   * [基础类型](HandBook/Basic-Types.md)
 
   * [变量声明](HandBook/Variable-Declarations.md)
