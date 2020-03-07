@@ -1,4 +1,4 @@
-# 简介
+# TypeScript 简介
 
 TypeScript是一种由微软开发的[开源](https://baike.baidu.com/item/开源/246339)、跨平台的编程语言。它是[JavaScript](https://baike.baidu.com/item/JavaScript)的超集，最终会被编译为JavaScript代码，可以运行在任何浏览器上。TypeScript添加了可选的静态类型系统、很多尚未正式发布的ECMAScript新特性（如装饰器 [1] ）支持 ECMAScript 6 标准。2012年10月，微软发布了首个公开版本的TypeScript，2013年6月19日，在经历了一个预览版之后微软正式发布了正式版TypeScript。
 
