@@ -1,9 +1,9 @@
 # Summary
 
-* [简介](README.md)
+* [Typescript 简介](README.md)
 * [辅助教程](Tutorials)
 
-  * [5分钟上手](Tutorials/TypeScript-in-5-miniutes.md)
+  * [5分钟上手](Tutorials/TypeScript-in-5-minutes.md)
   * [从JavaScript迁移](Tutorials/Migrating-from-Javascript.md)
 
 * [参考手册](HandBook)
