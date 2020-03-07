@@ -1,12 +1,12 @@
 # Summary
 
 * [Typescript 简介](README.md)
-* [辅助教程]
+* 辅助教程
 
   * [5分钟上手](Tutorials/TypeScript-in-5-minutes.md)
   * [从JavaScript迁移](Tutorials/Migrating-from-Javascript.md)
 
-* [参考手册]
+* 参考手册
 
   * [基础类型](HandBook/Basic-Types.md)
 
@@ -32,7 +32,7 @@
   * [三斜线指令](HandBook/Triple-Slash-Directives.md)
   * [Javascript类型检查](HandBoo/Type-Checking-Javascript-Files.md)
 
-* [声明文件]
+* 声明文件
   * [介绍](Declaration-Files/Introduction.md)
   * [结构](Declaration-Files/Library-Structures.md)
   * [举例](Declaration-Files/By-Example.md)
@@ -42,7 +42,7 @@
   * [发布](Declaration-Files/Publishing.md)
   * [使用](Declaration-Files/Consumption.md)
 
-* [项目配置]
+* 项目配置
   * [tsconfig.json](Project-Configuration/tsconfig.json.md)
   * [编译选项](Project-Configuration/Compiler-Options.md)
   * [项目引用](Project-Configuration/Project-References.md)
