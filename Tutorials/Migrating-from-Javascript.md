@@ -111,5 +111,225 @@ module.exports = {
 
 到目前为止，你已经做好了使用`TypeScript`文件的准备。 第一步，将 `.js`文件重命名为`.ts`文件。 如果你使用了`JSX`，则重命名为 `.tsx`文件。
 
-第一步达成？ 太棒了! 你已经成功地将一个文件从`JavaScript`转换成了`TypeScript`!
+如果你不想让TypeScript将没有明确指定的类型默默地推断为 `any`类型，可以在修改文件之前启用`noImplicitAny`。 你可能会觉得这有些过度严格，但是长期收益很快就能显现出来。
+
+在转换后将会看到错误信息。 重要的是我们要逐一的查看它们并决定如何处理。 通常这些都是真正的BUG，但有时必须要告诉TypeScript你要做的是什么。
+
+### 1）由模块导入
+
+你可能会看到一些类似`Cannot find name 'require'.`和`Cannot find name 'define'.`的错误。 遇到这种情况说明你在使用模块。 你仅需要告诉TypeScript它们是存在的：
+
+```typescript
+// For Node/CommonJS
+declare function require(path: string): any;
+```
+
+或者
+
+```typescript
+// For RequireJS//AMD
+declare function define(...args: any[]): any;
+```
+
+最好是避免使用这些调用而改用TypeScript的导入语法
+
+首先，你要使用TypeScript的`module`标记来启用一些模块系统，可用的选项有`commonjs`, `amd`, `system`,`umd`。
+
+例如：
+
+```js
+var foo = require('foo')
+foo.doStuff();
+```
+
+用TS语法改写
+
+```js
+import foo = require('foo')
+foo.doSuff()
+```
+
+### 2）获取声明文件
+
+js 转换成 ts 可能会遇到 `cannot find module 'foo'` 这样的错误，问题出在没有声明文件来描述你的代码库，幸运的是这非常简单，如果TS抱怨像是没有`lodash`包，那你只需要安装声明文件就可以
+
+```js
+npm install -s @types/lodash
+```
+
+如果你没有使用 `commonjs`模块选项，那么就需要讲`moduleResolution`选项设置为`node`
+
+之后，你就可以导入`lodash`了，并且会获得精确的自动补全功能。
+
+### 3）由模块导出
+
+通常来说，模块导出涉及到`exports` 或者 `module.exports`。TS 允许你是用顶级的导出语句，比如：
+
+导出匿名函数
+
+```js
+module.exports.feedPets = function(pets){
+	//...
+}
+```
+
+TS改写：
+
+```js
+export function(pets){
+	// ...
+}
+```
+
+导出函数名:
+
+```js
+function foo(){
+ // ...
+}
+```
+
+TS 改写：
+
+```js
+function foo(){
+	// ...
+}
+
+export = foo
+```
+
+### 4）过多或过少的参数
+
+有时你会发现你在调用一个具有过多或者过少参数的函数。通常，这是一个BUG，单在某些情况下，你可以声明一个使用`arguments`对象而不需要写出所有的参数
+
+```js
+function myCoolFunction() {
+    if (arguments.length == 2 && !Array.isArray(arguments[1])) {
+        var f = arguments[0];
+        var arr = arguments[1];
+        // ...
+    }
+    // ...
+}
+
+myCoolFunction(function(x) { console.log(x) }, [1, 2, 3, 4]);
+myCoolFunction(function(x) { console.log(x) }, 1, 2, 3, 4);
+```
+
+这种情况下，我们需要利用TypeScript的函数重载来告诉调用者 `myCoolFunction`函数的调用方式。
+
+```js
+function myCoolFunction(f: (x: number)=> void, nums: number[]): void;
+function myCoolFunction(f: (x: number)=> void, ...nums: number[]): void;
+
+function myCoolFunction() {
+    if(arguments.length == 2 && !Array.isArray(arguments[1])){
+        var f = arguments[0]
+        var arr = arguments[1]
+        // ...
+    }
+    // ...
+}
+```
+
+我们为 `myCoolFunction` 函数添加了两个重载签名。第一个检查`myCoolFunction`函数是否接受一个函数（它又接受一个`number`参数）和一个`number`数组。第二个同样接收了一个函数，并且剩余参数（`...nums`）来表示之后的其他所有参数必须是`number`类型
+
+### 5）连续添加属性
+
+有些人可能因为代码美观性而喜欢先创建一个对象然后立即添加属性
+
+```js
+var option = {}
+option.color = 'red';
+option.volum = 11
+```
+
+TS会提示你不能给`color`和`volum`赋值，因为先前指定`option`的类型为`{}`并不带有任何属性。如果你将声明变成对象字面量将不会产生错误。
+
+```js
+var option = {
+	color: 'red',
+	volum : 11
+}
+```
+
+你还可以定义`option`的类型并且添加类型断言到对象字面量上
+
+```js
+interface Option {color: string, volum: number}
+
+let option = {} as Option
+option.color = 'red'
+option.volum = 11
+```
+
+你也可以把`option`指定成`any`类型，这是最简单的，也是受益最少的
+
+`any`,`Object`,`{}`区别
+
+`any`是最普通的类型但是允许你在上面做任何事情，也就是你可以在上面调用，构造，访问他的属性等等。但是当你使用`any`时，也就意味着你将失去大多数 TS 听歌的错误检查和编译器支持。
+
+如果你还是决定使用`Object`和`{}`，虽说他们基本一样，但是从技术层面说，`{}`在一些深奥的情况里比`Object`更普通
+
+### 6）启用严格检查
+
+TypeScript提供了一些检查来保证安全以及帮助分析你的程序。 当你将代码转换为了TypeScript后，你可以启用这些检查来帮助你获得高度安全性。
+
+#### （1）没有隐式的any
+
+在某些情况下TypeScript没法确定某些值的类型。 那么TypeScript会使用 `any`类型代替。 这对代码转换来讲是不错，但是使用 `any`意味着失去了类型安全保障，并且你得不到工具的支持。 你可以使用 `noImplicitAny`选项，让TypeScript标记出发生这种情况的地方，并给出一个错误。
+
+#### （2）严格的 null 和 undefined 替换
+
+默认地，TypeScript把`null`和`undefined`当做属于任何类型。 这就是说，声明为 `number`类型的值可以为`null`和`undefined`。 因为在JavaScript和TypeScript里， `null`和`undefined`经常会导致BUG的产生，所以TypeScript包含了`strictNullChecks`选项来帮助我们减少对这种情况的担忧。
+
+当启用了`strictNullChecks`，`null`和`undefined`获得了它们自己各自的类型`null`和`undefined`。 当任何值 *可能*为`null`，你可以使用联合类型。 比如，某值可能为 `number`或`null`，你可以声明它的类型为`number | null`。
+
+假设有一个值TypeScript认为可以为`null`或`undefined`，但是你更清楚它的类型，你可以使用`!`后缀。
+
+```typescript
+declare var foo: string[] | null;
+foo.length; // error - 'foo' is possibly 'null'
+foo!.length; // okay - 'foo!' just has type 'string[]'
+```
+
+要当心，当你使用`strictNullChecks`，你的依赖也需要相应地启用`strictNullChecks`。
+
+#### （3）this 没有隐式的 any 
+
+当你在类的外部使用`this`关键字时，它会默认获得`any`类型。 比如，假设有一个 `Point`类，并且我们要添加一个函数做为它的方法：
+
+```typescript
+class Point {
+	constructor(public x, public y){
+		
+	}
+	getDistance(p: Point){
+		let dx = p.x - this.x;
+		let dy = p.y - this.y;
+		return Msth.sqrt(dx**2 + dy**2)
+	}
+}
+
+// ...
+
+// 重开断言
+interface Point {
+	distanceFromOrigin(point: Point): number;
+}
+Point.prototype.distanceFromOrigin = function(point: Point){
+	return this.getDistance({x: 0, y: 0})
+}
+```
+
+这就产生了我们上面提到的错误 - 如果我们错误地拼写了`getDistance`并不会得到一个错误。 正因此，TypeScript有 `noImplicitThis`选项。 当设置了它，TypeScript会产生一个错误当没有明确指定类型（或通过类型推断）的 `this`被使用时。 解决的方法是在接口或函数上使用指定了类型的 `this`参数：
+
+下面是原型链改写
+
+```typescript
+Point.prototype.distanceFromOrigin = function(this: Point, point: Point){
+	return this.getDistance({x: 0, y: 0});
+}
+```
 
