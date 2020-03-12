@@ -23,8 +23,6 @@
     "tbfed-pagefooter@0.0.1",
     "auto-scroll-table@0.0.5",
     "heading-anchors",
-    "prism@2.4.0",
-    "-highlight",
     "-sharing"
   ],
   "pluginsConfig": {
